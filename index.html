@@ -69,7 +69,7 @@
         function showOnScreen(obj) {
     let ele = document.getElementById('list');
     
-    ele.innerHTML = ele.innerHTML + `<div id=${obj._id}> <li>${obj.name}-${obj.email}-${obj.phoneNumber}</li> <button onclick="deleteItem('${obj.name}')">delete</button><button onclick="edit('${obj.name}')">Edit</button> <button id=${obj._id} onclick="jhapa('${obj._id}')">delete2</button></div>`;
+    ele.innerHTML = ele.innerHTML + `<div id=${obj._id}> <li>${obj.name}-${obj.email}-${obj.phoneNumber}</li> <button onclick="deleteItem('${obj.name}')">delete</button><button onclick="edit('${obj._id}')">Edit</button> <button id=${obj._id} onclick="jhapa('${obj._id}')">delete2</button></div>`;
 }
 
 
@@ -98,13 +98,18 @@
             localStorage.removeItem(listId);
         }
 
-        function edit(name) {
-            const storedData = JSON.parse(localStorage.getItem(name));
-            // console.log(storedData);
-            document.querySelector('input[name="username"]').value = storedData.name;
-            document.querySelector('input[name="emailId"]').value = storedData.email;
-            document.querySelector('select[name="phoneNumber"]').value = storedData.phoneNumber;
-        }
+        function edit(itemId) {
+        axios.get(`https://crudcrud.com/api/bdbb50fbf9594bc48aab92a5382d2cef/appointmentData/${itemId}`)
+            .then((res) => {
+                const storedData = res.data;
+                document.querySelector('input[name="username"]').value = storedData.name;
+                document.querySelector('input[name="emailId"]').value = storedData.email;
+                document.querySelector('select[name="phoneNumber"]').value = storedData.phoneNumber;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
     </script>
 </body>
 </html>
