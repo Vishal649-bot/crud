@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" onsubmit="saveToLocalStorage(event)">
+        <label>Choose ExpenseAmount</label>
+        <input type="text" name="username">
+        <label>Choose Description</label>
+        <input type="text" name="emailId" id="">
+        <label>Choose Category</label>
+        <select name="phoneNumber" id="">
+            <option value="Fuel">Fuel</option>
+            <option value="Food">Food</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Movie">Movie</option>
+        </select>
+        <button>submit</button>
+    </form>
+    <ul id="list"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script>
+        function saveToLocalStorage(event) {
+            event.preventDefault();
+            const name = event.target.username.value;
+            const email = event.target.emailId.value;
+            const phoneNumber = event.target.phoneNumber.value;
+
+            const obj = {
+                name: name,
+                email: email,
+                phoneNumber: phoneNumber
+            };
+
+            axios.post("https://crudcrud.com/api/9b6e38e230984170b1ce61eec6c9374d/appointmentData", obj)
+            .then(res => {
+                console.log(res);
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+            // localStorage.setItem(obj.name, JSON.stringify(obj));
+
+            showOnScreen(obj);
+        }
+
+        function showOnScreen(obj) {
+            let ele = document.getElementById('list');
+            
+            ele.innerHTML = ele.innerHTML + `<div id=${obj.name}> <li>${obj.name}-${obj.email}-${obj.phoneNumber}</li>     <button onclick="deleteItem('${obj.name}')">delete</button><button onclick="edit('${obj.name}')">Edit</button></div>`;
+        }
+
+        function deleteItem(listId) {
+            let ele = document.getElementById(listId);
+            console.log(ele);
+            ele.innerHTML = " ";
+            localStorage.removeItem(listId);
+        }
+
+        function edit(name) {
+            const storedData = JSON.parse(localStorage.getItem(name));
+            // console.log(storedData);
+            document.querySelector('input[name="username"]').value = storedData.name;
+            document.querySelector('input[name="emailId"]').value = storedData.email;
+            document.querySelector('select[name="phoneNumber"]').value = storedData.phoneNumber;
+        }
+    </script>
+</body>
+</html>
