@@ -35,7 +35,7 @@
                 phoneNumber: phoneNumber
             };
 
-            axios.post("https://crudcrud.com/api/9b6e38e230984170b1ce61eec6c9374d/appointmentData", obj)
+            axios.post("https://crudcrud.com/api/bdbb50fbf9594bc48aab92a5382d2cef/appointmentData", obj)
             .then(res => {
                 showOnScreen(res.data)
               
@@ -50,7 +50,7 @@
         }
 
         window.addEventListener("DOMContentLoaded",()=>{
-            axios.get("https://crudcrud.com/api/9b6e38e230984170b1ce61eec6c9374d/appointmentData")
+            axios.get(" https://crudcrud.com/api/bdbb50fbf9594bc48aab92a5382d2cef/appointmentData")
             .then((res)=> {
                 console.log(res)
                 for (let i = 0; i < res.data.length; i++) {
@@ -64,11 +64,32 @@
     
         )
 
+
+
         function showOnScreen(obj) {
-            let ele = document.getElementById('list');
-            
-            ele.innerHTML = ele.innerHTML + `<div id=${obj.name}> <li>${obj.name}-${obj.email}-${obj.phoneNumber}</li>     <button onclick="deleteItem('${obj.name}')">delete</button><button onclick="edit('${obj.name}')">Edit</button></div>`;
+    let ele = document.getElementById('list');
+    
+    ele.innerHTML = ele.innerHTML + `<div id=${obj._id}> <li>${obj.name}-${obj.email}-${obj.phoneNumber}</li> <button onclick="deleteItem('${obj.name}')">delete</button><button onclick="edit('${obj.name}')">Edit</button> <button id=${obj._id} onclick="jhapa('${obj._id}')">delete2</button></div>`;
+}
+
+
+        function jhapa(itemId) {
+        axios.delete(`https://crudcrud.com/api/bdbb50fbf9594bc48aab92a5382d2cef/appointmentData/${itemId}`)
+            .then((res) => {
+                console.log(res);
+                removeItemFromScreen(itemId);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    function removeItemFromScreen(itemId) {
+        let ele = document.getElementById(itemId);
+        if (ele) {
+            ele.remove();
         }
+    }
 
         function deleteItem(listId) {
             let ele = document.getElementById(listId);
