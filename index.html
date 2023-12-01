@@ -37,15 +37,32 @@
 
             axios.post("https://crudcrud.com/api/9b6e38e230984170b1ce61eec6c9374d/appointmentData", obj)
             .then(res => {
-                console.log(res);
+                showOnScreen(res.data)
+              
+                // console.log(res);
             })
             .catch((err)=>{
                 console.log(err);
             })
             // localStorage.setItem(obj.name, JSON.stringify(obj));
 
-            showOnScreen(obj);
+            // showOnScreen(obj);
         }
+
+        window.addEventListener("DOMContentLoaded",()=>{
+            axios.get("https://crudcrud.com/api/9b6e38e230984170b1ce61eec6c9374d/appointmentData")
+            .then((res)=> {
+                console.log(res)
+                for (let i = 0; i < res.data.length; i++) {
+                    showOnScreen(res.data[i])
+                }
+            })
+            .catch((error)=>{ 
+                console.log(error);
+            })
+        }
+    
+        )
 
         function showOnScreen(obj) {
             let ele = document.getElementById('list');
